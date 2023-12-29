@@ -23,14 +23,15 @@ router.post('/api/create',async(req,res)=>{
     res.status(200).json({ message: 'User Cretted successfully' })
 })
 
-router.put('/api/update',async(req,res)=>{
-    const {id,name,age,password}=req.body
+router.put('/api/update/:id',async(req,res)=>{
+    const id=req.params.id
+    const {name,age,password}=req.body
     const updatedvalue=await update_user(id,name,age,password)
     res.status(200).json({ message: 'User updated successfully' })
 })
 
-router.delete('/api/delete',async(req,res)=>{
-    const {id}=req.body
+router.delete('/api/delete/:id',async(req,res)=>{
+    const id=req.params.id
     const message=await delete_user(id)
     res.status(200).json({ message: 'User Deleted successfully' })
 
