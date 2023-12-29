@@ -9,42 +9,74 @@ const pool=mysql.createPool({
     database:process.env.MYSQL_DATABSENAME,
 }).promise()
 
+
 export const getmeaasges=(async ()=>{
-    const [rows]= await pool.query('SELECT * FROM User')
-    return rows
+    try{
+        const [rows]= await pool.query('SELECT * FROM User')
+        return rows
+    }catch(error){
+        console.log("Error fetchin message",error)
+        throw new Error('Falied to get data from databse')
+    }
+    
 })
 
+
 export const getoneuser=(async(id)=>{
-    const[result]=await pool.query(
-        `SELECT * FROM User
-         WHERE UserID=?`
-         ,[id])
-    return result
+    try{
+        const[result]=await pool.query(
+            `SELECT * FROM User
+             WHERE UserID=?`
+             ,[id])
+        return result
+    }catch(error){
+        console.log('Error in get one user:',error)
+        throw new Error("Error in getting one user")
+    }
+   
 })
 
 export const createoneuser=(async(id,name,age,password)=>{
-    const [create]=await pool.query(
-        `INSERT INTO User(UserID,UserName,Age,Password)
-         VALUES(?,?,?,?)`
-        ,[id,name,age,password])
-    return getoneuser(id)
+    try{
+        const [create]=await pool.query(
+            `INSERT INTO User(UserID,UserName,Age,Password)
+             VALUES(?,?,?,?)`
+            ,[id,name,age,password])
+        return getoneuser(id)
+    }catch(error){
+        console.log("Error in creating user:",error)
+        throw new Error('Cant create new user')
+    }
+    
 })
 
 export const update_user=(async(id,name,age,password)=>{
-    const [updated]=await pool.query(
-        `UPDATE User SET
-        UserName=?,
-        Age=?,
-        Password=?
-        WHERE UserID=?`
-        ,[name,age,password,id])
-    return updated
+    try{
+        const [updated]=await pool.query(
+            `UPDATE User SET
+            UserName=?,
+            Age=?,
+            Password=?
+            WHERE UserID=?`
+            ,[name,age,password,id])
+        return updated
+    }catch(error){
+        console.log('Error in Updateing itmes')
+        throw new Error("cant update the users")
+    }
+    
 })
 
 export const delete_user=(async(id)=>{
-    const [result]=await pool.query(`
-    DELETE FROM User
-    WHERE UserID=?`,
-    [id])
-    return result
+    try{
+        const [result]=await pool.query(`
+        DELETE FROM User
+        WHERE UserID=?`,
+        [id])
+        return result
+    }catch(error){
+        console.log("error in Deleting items in databse")
+        throw new Error('cant delete from dtabse quryy')
+    }
+    
 })
